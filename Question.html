@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Moving On</title>
+	<style type="text/css">
+		body
+		{
+			padding: 0;
+			border: 0;
+			margin: 0;
+			text-align: center;
+			color: white;
+			background: black;
+		}
+		canvas
+		{
+			display: block;
+			width: 100vw;
+			height: 100vh;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="c"></canvas>
+	<script type="text/javascript">
+		// statics
+		var mCanvas = document.getElementById("c");
+		mCanvas.width = screen.width;
+		mCanvas.height = screen.height;
+		var ctx = mCanvas.getContext("2d");
+		function clear()
+		{
+			ctx.clearRect(0,0,mCanvas.width,mCanvas.height);
+		}
+		ctx.strokeStyle = "rgb(255, 0, 102)";
+		ctx.fillStyle = ctx.strokeStyle;
+
+		// objects
+		function pulsar()
+		{
+			if (screen.width < screen.height)
+			{
+				this.rad_min = screen.width/9;
+				this.rad_max = screen.width/3;
+			}
+			else
+			{
+				this.rad_min = screen.height/9;
+				this.rad_max = screen.height/3;
+			}
+			this.rad_delta = this.rad_max - this.rad_min;
+			this.radian = Math.PI/180;
+			this.rad = this.rad_min;
+			this.x = screen.width/2;
+			this.y = screen.height/2;
+			this.set = function(n)
+			{
+				this.rad += this.rate*n;
+			}
+			this.draw = function()
+			{
+				if (this.radian >= Math.PI)
+				{
+					this.radian = Math.PI/180;
+				}
+				else
+				{
+					this.radian += Math.PI/180;
+				}
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.rad + this.rad_delta*Math.sin(this.radian), 0, 2*Math.PI);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.rad_min, 0, 2*Math.PI);
+				ctx.fill();
+					
+			}
+		}
+		ctx.textAlign = "center";
+		function word()
+		{
+			this.fontsize = mCanvas.height/9;
+			this.x = mCanvas.width/2;
+			this.y = mCanvas.height/2;
+			this.words = "It'll be fine.";
+			this.delta = mCanvas.width*0.01;
+			this.radian = Math.PI/180;
+			this.set = function()
+			{
+				ctx.font = this.fontsize.toString() + "px Arial";
+				while (ctx.measureText(this.words).width >= mCanvas.width/2)
+				{
+					this.fontsize-=4;
+					ctx.font = this.fontsize.toString() + "px Arial";
+				}
+				while (ctx.measureText(this.words).width < mCanvas.width/2)
+				{
+					this.fontsize+=4;
+					ctx.font = this.fontsize.toString() + "px Arial";
+				}
+			}
+			this.draw = function()
+			{
+				if (this.radian >= Math.PI)
+				{
+					this.radian = Math.PI/180;
+				}
+				this.radian += Math.PI/180;
+				ctx.font = (this.fontsize + Math.sin(this.radian)*this.delta).toString() + "px Arial";
+				ctx.fillText(this.words, this.x, this.y);
+			}
+		}
+		function sample(a, b)
+		{
+			return Math.random()*(b-a)+a;
+		}
+
+		// drawing
+		var pulses = new pulsar();
+		var pulse = true;
+		var myQuestion = new word();
+		document.onclick = function()
+		{
+			pulse = false;
+			myQuestion.set();
+			ctx.fillStyle = "cyan";
+		}
+		document.onkeydown = function()
+		{
+			pulse = false;
+			myQuestion.set();
+			ctx.fillStyle = "cyan";
+		}
+		document.ontouchstart = function()
+		{
+			pulse = false;
+			myQuestion.set();
+			ctx.fillStyle = "cyan";
+		}
+		function drawing()
+		{
+			clear();
+			if (pulse)
+			{
+				pulses.draw();
+			}
+			else
+			{
+				myQuestion.draw();
+			}
+		}
+		var interval = setInterval(drawing, 16);
+	</script>
+</body>
+</html>
