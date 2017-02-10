@@ -11,6 +11,7 @@
 			text-align: center;
 			color: white;
 			background: black;
+  			background: radial-gradient(circle, magenta 4%, black 16%); /* Standard syntax */
 		}
 		canvas
 		{
@@ -21,6 +22,9 @@
 	</style>
 </head>
 <body>
+	<audio autoplay="true" loop="true">
+		<source src="Zet.ogg" type="audio/ogg">
+	</audio>
 	<canvas id="c"></canvas>
 	<script type="text/javascript">
 		// statics
@@ -118,35 +122,31 @@
 		// drawing
 		var pulses = new pulsar();
 		var pulse = true;
-		var myQuestion = new word();
-		document.onclick = function()
-		{
-			pulse = false;
-			myQuestion.set();
-			ctx.fillStyle = "cyan";
-		}
-		document.onkeydown = function()
-		{
-			pulse = false;
-			myQuestion.set();
-			ctx.fillStyle = "cyan";
-		}
-		document.ontouchstart = function()
-		{
-			pulse = false;
-			myQuestion.set();
-			ctx.fillStyle = "cyan";
-		}
+		// var myQuestion = new word();
+		// document.onclick = function()
+		// {
+		// 	pulse = false;
+		// 	myQuestion.set();
+		// 	ctx.fillStyle = "cyan";
+		// }
+		// document.onkeydown = function()
+		// {
+		// 	pulse = false;
+		// 	myQuestion.set();
+		// 	ctx.fillStyle = "cyan";
+		// }
+		// document.ontouchstart = function()
+		// {
+		// 	pulse = false;
+		// 	myQuestion.set();
+		// 	ctx.fillStyle = "cyan";
+		// }
 		function drawing()
 		{
 			clear();
 			if (pulse)
 			{
 				pulses.draw();
-			}
-			else
-			{
-				myQuestion.draw();
 			}
 		}
 		var interval = setInterval(drawing, 9);
